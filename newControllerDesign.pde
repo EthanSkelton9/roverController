@@ -6,21 +6,22 @@ import processing.serial.*; //import serial library
 
 ControlP5 cp5; //create a ControlP5 object
 
-Button forward;
+Button forward;  //movement buttons
 Button right; 
 Button left; 
 Button backward; 
 
-Button raise;
+Button raise;  //scoop buttons
 Button lower;
-
-Button zero;
+ 
+Button zero;    //speed buttons
 Button twtyfive;
 Button ffty;
 Button svnfive;
 Button hundred;
 
-//Serial port;
+//Serial port;  //arduino connection
+
 //end variable declaration ---------------/
 
 //start methods for making buttons ------------------------------------------------>
@@ -112,17 +113,30 @@ void hundred(ControlP5 cp){
 //end methods for making buttons ------------------------------------------------------>
 
 // start controls to switch button on and off -----------------------------------------+
-void setOn(Button button){
+void setOn(Button button){ //switch button on
   button.setOn();
 }
 
-void setOff(Button button){
+void setOff(Button button){ // switch button off
   button.setOff();
 }
 // end controls to switch button on and off --------------------------------------------+
 
 
+void batteryCapsole(float x, float y){
+  fill(255, 0, 0);
+  rect(x, y, 10, 20);
+}
 
+void greenBatteryCapsole(float x, float y){
+  fill(0, 255, 0);
+  rect(x, y, 10, 20);
+}
+
+void redBatteryCapsole(float x, float y){
+  fill(255, 0, 0);
+  rect(x, y, 10, 20);
+}
 
 
 void setup(){ //setup function
@@ -133,22 +147,29 @@ void setup(){ //setup function
   //port = new Serial(this, "COM4", 9600); //connect arduino to HC-06
 
   forwardSetUp(cp5);
-  backwardSetUp(cp5);
+  backwardSetUp(cp5); //draw movement
   rightSetUp(cp5);
   leftSetUp(cp5);
   
-  raiseScoopSetUp(cp5);
+  raiseScoopSetUp(cp5); //draw scoop movement
   lowerScoopSetUp(cp5);
   
-  zero(cp5);
+  zero(cp5);   //draw speed
   twentyFive(cp5);
   fifty(cp5);
   seventyFive(cp5);
   hundred(cp5);
   
-  zero.setOn();
+  zero.setOn();   //set two buttons to on
   twtyfive.setOn();
-  
+ 
+  background(211,211,211); //creates a dark grey background for the control panel
+  text("battery", 620, 10);
+  batteryCapsole(650, 10);
+  batteryCapsole(640, 10);
+  batteryCapsole(630, 10);
+  batteryCapsole(620, 10);
+
   
 }
 
@@ -158,7 +179,16 @@ void setup(){ //setup function
 void draw() {
   
 
-  background(211,211,211); //creates a dark grey background for the control panel
+
+  //battery level reading
+  
+    //port.read();
+    //if(){  //25%
+      greenBatteryCapsole(650,10);
+    //}
+    
+  
+  
   
   //if(forward.isOn()){
   //  println("forward");
@@ -167,13 +197,13 @@ void draw() {
 
 
 //start key checking ---------------------------------------k
-void keyPressed() {
+void keyPressed() {  //check which key is pressed and do something when it is
  try{
 
   Button speed = null;
   char speedInput = 'n';
   
-  if(twtyfive.isOn()){
+  if(twtyfive.isOn()){  //check which speed value is currently active
     speed = twtyfive;
     speedInput = 'x';
   }
@@ -231,20 +261,20 @@ void keyPressed() {
         //port.write('d');
         break;
       case 'v':
-        setOn(twtyfive);
         setOff(speed);
+        setOn(twtyfive);
         break;
       case 'b':
-        setOn(ffty);
         setOff(speed);
+        setOn(ffty);
         break;
       case 'n':
-        setOn(svnfive);
         setOff(speed);
+        setOn(svnfive);
         break;
       case 'm':
-        setOn(hundred);
         setOff(speed);
+        setOn(hundred);
         break;
       default:
         println("not valid input");
@@ -255,9 +285,9 @@ void keyPressed() {
   
 }
 
-void keyReleased() {
+void keyReleased() { // do something when the key is released
 
-  switch(key){
+  switch(key){ // check which key is pressed and turn on and off buttons and send port stuff
   case 'w':
     setOff(forward);
     setOn(zero);
@@ -286,13 +316,14 @@ void keyReleased() {
     setOff(lower);
     //port.write('d');
     break;
-  case 'v':
+ 
+  case 'v': //nothing happens when releasing speed controls
     break;
-  case 'b':
+  case 'b': // speed control
     break;
-  case 'n':
+  case 'n': // speed control
     break;
-  case 'm':
+  case 'm': // speed control
     break;
   default:
     println("not valid input");
