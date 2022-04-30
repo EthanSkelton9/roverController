@@ -20,7 +20,7 @@ Button ffty;
 Button svnfive;
 Button hundred;
 
-//Serial port;  //arduino connection
+Serial port;  //arduino connection
 
 //end variable declaration ---------------/
 
@@ -144,7 +144,7 @@ void setup(){ //setup function
   size(700,300); //window size that we will use width,height
 
   cp5 = new ControlP5(this); //create a new instance of class ConrtolP5
-  //port = new Serial(this, "COM4", 9600); //connect arduino to HC-06
+  port = new Serial(this, "COM4", 9600); //connect arduino to HC-06
 
   forwardSetUp(cp5);
   backwardSetUp(cp5); //draw movement
@@ -229,52 +229,56 @@ void keyPressed() {  //check which key is pressed and do something when it is
   
     switch(key){
       case 'w':
-        setOff(zero);
+        setOff(zero);         //foward
         setOn(forward);
-        //port.write('f');
-        //port.write(speedInput);
+        port.write('f');
+        port.write(speedInput);
         break;
       case 'a':
         setOff(zero);
         setOn(left);
-        //port.write('x');
-        //port.write(speedInput);
+        port.write('l');
+        port.write(speedInput);
         break;
-      case 's':
+      case 's':            //backwards
         setOff(zero);
         setOn(backward);
-        //port.write('r');
-        //port.write(speedInput);
+        port.write('p');
+        port.write(speedInput);
         break;
       case 'd':
         setOff(zero);
         setOn(right);
-        //port.write('b');
-        //port.write(speedInput);
+        port.write('r');
+        port.write(speedInput);
         break;
       case 'r':
         setOn(raise);
-        //port.write('u');
+        port.write('u');
         break;
       case 't':
         setOn(lower);
-        //port.write('d');
+        port.write('d');
         break;
-      case 'v':
+      case 'v':               //25
         setOff(speed);
         setOn(twtyfive);
+        port.write('x');
         break;
-      case 'b':
+      case 'b':              //50
         setOff(speed);
         setOn(ffty);
+        port.write('c');
         break;
-      case 'n':
+      case 'n':                 //75
         setOff(speed);
         setOn(svnfive);
+        port.write('v');
         break;
-      case 'm':
+      case 'm':               //100
         setOff(speed);
         setOn(hundred);
+        port.write('b');
         break;
       default:
         println("not valid input");
@@ -291,30 +295,28 @@ void keyReleased() { // do something when the key is released
   case 'w':
     setOff(forward);
     setOn(zero);
-    //port.write('x');
+    port.write('s');
     break;
   case 'a':
     setOff(left);
     setOn(zero);
-    //port.write('x');
+    port.write('s');
     break;
   case 's':
     setOff(backward);
     setOn(zero);
-    //port.write('x');
+    port.write('s');
     break;
   case 'd':
     setOff(right);
     setOn(zero);
-    //port.write('x');
+    port.write('s');
     break;
   case 'r':
     setOff(raise);
-    //port.write('u');
     break;
   case 't':
     setOff(lower);
-    //port.write('d');
     break;
  
   case 'v': //nothing happens when releasing speed controls
