@@ -122,22 +122,23 @@ void setOff(Button button){ // switch button off
 }
 // end controls to switch button on and off --------------------------------------------+
 
-
-void batteryCapsole(float x, float y){
+// start battery methods ---------------------------------------------------------------%
+void batteryCapsole(float x, float y){ //create a battery capsole
   fill(255, 0, 0);
   rect(x, y, 10, 20);
 }
 
-void greenBatteryCapsole(float x, float y){
+void greenBatteryCapsole(float x, float y){ //color battery capsole to green
   fill(0, 255, 0);
   rect(x, y, 10, 20);
 }
 
-void redBatteryCapsole(float x, float y){
+void redBatteryCapsole(float x, float y){ //color battery capsole to red
   fill(255, 0, 0);
   rect(x, y, 10, 20);
 }
 
+// end battery methods ---------------------------------------------------------------%
 
 void setup(){ //setup function
 
@@ -164,7 +165,8 @@ void setup(){ //setup function
   twtyfive.setOn();
  
   background(211,211,211); //creates a dark grey background for the control panel
-  text("battery", 620, 10);
+  
+  text("battery", 620, 10); //creating the battery
   batteryCapsole(650, 10);
   batteryCapsole(640, 10);
   batteryCapsole(630, 10);
@@ -183,8 +185,30 @@ void draw() {
   //battery level reading
   
     //port.read();
-    //if(){  //25%
+    //if(){                            //25% battery left
       greenBatteryCapsole(650,10);
+      redBatteryCapsole(640, 10);
+      redBatteryCapsole(630, 10);
+      redBatteryCapsole(620, 10);
+    //}
+    //else if (){                       //50% battery left
+    //  greenBatteryCapsole(650,10);
+    //  greenBatteryCapsole(640, 10);
+    //  redBatteryCapsole(630, 10);
+    //  redBatteryCapsole(620, 10);
+      
+    //}                                //75% battery left
+    //else if (){
+    //  greenBatteryCapsole(650,10);
+    //  greenBatteryCapsole(640, 10);
+    //  greenBatteryCapsole(630, 10);
+    //  redBatteryCapsole(620, 10);
+    //}
+    //else if (){                    //100% battery left
+    //  greenBatteryCapsole(650,10);
+    //  greenBatteryCapsole(640, 10);
+    //  greenBatteryCapsole(630, 10);
+    //  greenBatteryCapsole(620, 10);
     //}
     
   
@@ -229,53 +253,54 @@ void keyPressed() {  //check which key is pressed and do something when it is
   
     switch(key){
       case 'w':
-        setOff(zero);         //foward
+        setOff(zero);         //forward movement
         setOn(forward);
         port.write('f');
         port.write(speedInput);
         break;
-      case 'a':
+      case 'a':               //left movement
         setOff(zero);
         setOn(left);
         port.write('l');
         port.write(speedInput);
         break;
-      case 's':            //backwards
+      case 's':            //backwards movement
         setOff(zero);
         setOn(backward);
         port.write('p');
         port.write(speedInput);
         break;
       case 'd':
-        setOff(zero);
+        setOff(zero);         //right movement
         setOn(right);
         port.write('r');
         port.write(speedInput);
         break;
-      case 'r':
+      
+      case 'r':               //raise 
         setOn(raise);
         port.write('u');
         break;
-      case 't':
+      case 't':               //lower
         setOn(lower);
         port.write('d');
         break;
-      case 'v':               //25
+      case 'v':               //25% speed
         setOff(speed);
         setOn(twtyfive);
         port.write('x');
         break;
-      case 'b':              //50
+      case 'b':              //50% speed
         setOff(speed);
         setOn(ffty);
         port.write('c');
         break;
-      case 'n':                 //75
+      case 'n':                 //75% speed
         setOff(speed);
         setOn(svnfive);
         port.write('v');
         break;
-      case 'm':               //100
+      case 'm':               //100% speed
         setOff(speed);
         setOn(hundred);
         port.write('b');
@@ -312,6 +337,7 @@ void keyReleased() { // do something when the key is released
     setOn(zero);
     port.write('s');
     break;
+    
   case 'r':
     setOff(raise);
     break;
