@@ -20,6 +20,9 @@ Button ffty;
 Button svnfive;
 Button hundred;
 
+char batteryLvl;
+int check = 1;
+
 Serial port;  //arduino connection
 
 //end variable declaration ---------------/
@@ -172,6 +175,9 @@ void setup(){ //setup function
   batteryCapsole(630, 10);
   batteryCapsole(620, 10);
 
+  cp5.addButton("stop")              // movement speed will be set 100%
+   .setPosition(60, 50)                
+   .setSize(20, 20);
   
 }
 
@@ -181,35 +187,47 @@ void setup(){ //setup function
 void draw() {
   
 
-
+    
   //battery level reading
-  
-    //port.read();
-    //if(){                            //25% battery left
+    
+    batteryLvl = port.readChar();
+    
+    if(check == 1 && batteryLvl != 'l' && batteryLvl != 'k' && batteryLvl != 'j' && batteryLvl != 'h'){
+      port.write('m');
+      println(batteryLvl);
+    }
+    else if(check == 1){
+      check = 0;
+      port.write('m');
+    }
+    else{
+    }
+    
+    if(batteryLvl == 'h'){                            //25% battery left
       greenBatteryCapsole(650,10);
       redBatteryCapsole(640, 10);
       redBatteryCapsole(630, 10);
       redBatteryCapsole(620, 10);
-    //}
-    //else if (){                       //50% battery left
-    //  greenBatteryCapsole(650,10);
-    //  greenBatteryCapsole(640, 10);
-    //  redBatteryCapsole(630, 10);
-    //  redBatteryCapsole(620, 10);
+    }
+    else if (batteryLvl == 'j'){                       //50% battery left
+      greenBatteryCapsole(650,10);
+      greenBatteryCapsole(640, 10);
+      redBatteryCapsole(630, 10);
+      redBatteryCapsole(620, 10);
       
-    //}                                //75% battery left
-    //else if (){
-    //  greenBatteryCapsole(650,10);
-    //  greenBatteryCapsole(640, 10);
-    //  greenBatteryCapsole(630, 10);
-    //  redBatteryCapsole(620, 10);
-    //}
-    //else if (){                    //100% battery left
-    //  greenBatteryCapsole(650,10);
-    //  greenBatteryCapsole(640, 10);
-    //  greenBatteryCapsole(630, 10);
-    //  greenBatteryCapsole(620, 10);
-    //}
+    }                                                //75% battery left
+    else if (batteryLvl == 'k'){
+      greenBatteryCapsole(650,10);
+      greenBatteryCapsole(640, 10);
+      greenBatteryCapsole(630, 10);
+      redBatteryCapsole(620, 10);
+    }
+    else if (batteryLvl == 'l'){                    //100% battery left
+      greenBatteryCapsole(650,10);
+      greenBatteryCapsole(640, 10);
+      greenBatteryCapsole(630, 10);
+      greenBatteryCapsole(620, 10);
+    }
     
   
   
@@ -257,6 +275,7 @@ void keyPressed() {  //check which key is pressed and do something when it is
         setOn(forward);
         port.write('f');
         port.write(speedInput);
+        //System.out.println("forward");
         break;
       case 'a':               //left movement
         setOff(zero);
@@ -267,7 +286,7 @@ void keyPressed() {  //check which key is pressed and do something when it is
       case 's':            //backwards movement
         setOff(zero);
         setOn(backward);
-        port.write('p');
+        port.write('b');
         port.write(speedInput);
         break;
       case 'd':
@@ -280,10 +299,12 @@ void keyPressed() {  //check which key is pressed and do something when it is
       case 'r':               //raise 
         setOn(raise);
         port.write('u');
+        //System.out.println("lift");
         break;
       case 't':               //lower
         setOn(lower);
         port.write('d');
+        //System.out.println("lower");
         break;
       case 'v':               //25% speed
         setOff(speed);
@@ -303,7 +324,7 @@ void keyPressed() {  //check which key is pressed and do something when it is
       case 'm':               //100% speed
         setOff(speed);
         setOn(hundred);
-        port.write('b');
+        port.write('a');
         break;
       default:
         println("not valid input");
@@ -316,48 +337,55 @@ void keyPressed() {  //check which key is pressed and do something when it is
 
 void keyReleased() { // do something when the key is released
 
-  switch(key){ // check which key is pressed and turn on and off buttons and send port stuff
-  case 'w':
-    setOff(forward);
-    setOn(zero);
-    port.write('s');
-    break;
-  case 'a':
-    setOff(left);
-    setOn(zero);
-    port.write('s');
-    break;
-  case 's':
-    setOff(backward);
-    setOn(zero);
-    port.write('s');
-    break;
-  case 'd':
-    setOff(right);
-    setOn(zero);
-    port.write('s');
-    break;
-    
-  case 'r':
-    setOff(raise);
-    break;
-  case 't':
-    setOff(lower);
-    break;
- 
-  case 'v': //nothing happens when releasing speed controls
-    break;
-  case 'b': // speed control
-    break;
-  case 'n': // speed control
-    break;
-  case 'm': // speed control
-    break;
-  default:
-    println("not valid input");
-  }
+    switch(key){ // check which key is pressed and turn on and off buttons and send port stuff
+    case 'w':
+      setOff(forward);
+      setOn(zero);
+      port.write('z');
+      System.out.println("stop");
+      break;
+    case 'a':
+      setOff(left);
+      setOn(zero);
+      port.write('z');
+      break;
+    case 's':
+      setOff(backward);
+      setOn(zero);
+      port.write('z');
+      break;
+    case 'd':
+      setOff(right);
+      setOn(zero);
+      port.write('z');
+      break;
+      
+    case 'r':
+      setOff(raise);
+      break;
+    case 't':
+      setOff(lower);
+      break;
+   
+    case 'v': // speed 25%
+      port.write('z');
+      break;
+    case 'b': // speed 50%
+      port.write('z');
+      break;
+    case 'n': // speed 75%
+      port.write('z');
+      break;
+    case 'm': // speed 100%
+      port.write('z');
+      break;
+    default:
+      println("not valid input");
+    }
 
 }
 
-
+void stop(){
+  port.write('z');
+}
 //end key checking ---------------------------------------k
