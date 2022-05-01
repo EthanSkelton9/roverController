@@ -20,8 +20,8 @@ Button ffty;
 Button svnfive;
 Button hundred;
 
-char batteryLvl;
-int check = 1;
+char batteryLvl; //battery input value
+int check = 1; //for battery
 
 Serial port;  //arduino connection
 
@@ -192,49 +192,43 @@ void draw() {
     
     batteryLvl = port.readChar();
     
-    if(check == 1 && batteryLvl != 'l' && batteryLvl != 'k' && batteryLvl != 'j' && batteryLvl != 'h'){
+    if(check == 1 && batteryLvl != 'l' && batteryLvl != 'k' && batteryLvl != 'j' && batteryLvl != 'h'){ // send a value to arduino if it has not recieved a battery level yet 
       port.write('m');
       println(batteryLvl);
     }
-    else if(check == 1){
+    else if(check == 1){ //once it has recieved a battery level make the check 0 so that the if statement is not used again
       check = 0;
       port.write('m');
     }
     else{
     }
     
-    if(batteryLvl == 'h'){                            //25% battery left
+    if(batteryLvl == 'h'){                            //25% battery left red red red green
       greenBatteryCapsole(650,10);
       redBatteryCapsole(640, 10);
       redBatteryCapsole(630, 10);
       redBatteryCapsole(620, 10);
-    }
-    else if (batteryLvl == 'j'){                       //50% battery left
+    } 
+    else if (batteryLvl == 'j'){                       //50% battery left red red green green
       greenBatteryCapsole(650,10);
       greenBatteryCapsole(640, 10);
       redBatteryCapsole(630, 10);
       redBatteryCapsole(620, 10);
       
-    }                                                //75% battery left
+    }                                                //75% battery left red green green green
     else if (batteryLvl == 'k'){
       greenBatteryCapsole(650,10);
       greenBatteryCapsole(640, 10);
       greenBatteryCapsole(630, 10);
       redBatteryCapsole(620, 10);
     }
-    else if (batteryLvl == 'l'){                    //100% battery left
+    else if (batteryLvl == 'l'){                    //100% battery left green green green green
       greenBatteryCapsole(650,10);
       greenBatteryCapsole(640, 10);
       greenBatteryCapsole(630, 10);
       greenBatteryCapsole(620, 10);
     }
-    
-  
-  
-  
-  //if(forward.isOn()){
-  //  println("forward");
-  //}
+
 }
 
 
@@ -337,38 +331,38 @@ void keyPressed() {  //check which key is pressed and do something when it is
 
 void keyReleased() { // do something when the key is released
 
-    switch(key){ // check which key is pressed and turn on and off buttons and send port stuff
+    switch(key){ // check which key is pressed and turn on and off buttons and send port input
     case 'w':
-      setOff(forward);
+      setOff(forward);  //forward movement
       setOn(zero);
       port.write('z');
-      System.out.println("stop");
+      //System.out.println("stop");
       break;
     case 'a':
-      setOff(left);
+      setOff(left);  //left movement
       setOn(zero);
       port.write('z');
       break;
     case 's':
-      setOff(backward);
+      setOff(backward);  //backward movement
       setOn(zero);
       port.write('z');
       break;
     case 'd':
-      setOff(right);
+      setOff(right);  //right movement
       setOn(zero);
       port.write('z');
       break;
       
     case 'r':
-      setOff(raise);
+      setOff(raise);  //raise the scoop
       break;
     case 't':
-      setOff(lower);
+      setOff(lower);  //lower the scoop
       break;
    
     case 'v': // speed 25%
-      port.write('z');
+      port.write('z');  
       break;
     case 'b': // speed 50%
       port.write('z');
