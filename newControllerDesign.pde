@@ -20,8 +20,8 @@ Button ffty;
 Button svnfive;
 Button hundred;
 
-char batteryLvl; //battery input value
-int check = 1; //for battery
+char batteryLvl;
+int check = 1;
 
 Serial port;  //arduino connection
 
@@ -31,14 +31,14 @@ Serial port;  //arduino connection
 
 //start movement contol ------------m
 void forwardSetUp(ControlP5 cp){
-forward = cp.addButton("forward")        //forward
+forward = cp.addButton("forward (w)")        //forward
     .setPosition(190, 50) 
     .setSize(120, 70)
     .setSwitch(true);
 }
 
 void backwardSetUp(ControlP5 cp){
-backward = cp.addButton("backward")        //backward
+backward = cp.addButton("backward (s)")        //backward
     .setPosition(190, 210)
     .setSize(120, 70)
     .setSwitch(true);
@@ -46,7 +46,7 @@ backward = cp.addButton("backward")        //backward
 
 
 void rightSetUp(ControlP5 cp){
-right = cp.addButton("right")        //right
+right = cp.addButton("right (d)")        //right
     .setPosition(330, 130)
     .setSize(120, 70)
     .setSwitch(true);
@@ -54,7 +54,7 @@ right = cp.addButton("right")        //right
 
 
 void leftSetUp(ControlP5 cp){
-left = cp.addButton("left")        //left
+left = cp.addButton("left (a)")        //left
     .setPosition(50, 130)
     .setSize(120, 70)
     .setSwitch(true);
@@ -64,13 +64,13 @@ left = cp.addButton("left")        //left
 //start lift contol --------------l
 
 void lowerScoopSetUp(ControlP5 cp){
-  lower = cp.addButton("lower")              //lower the scoop
+  lower = cp.addButton("lower (t)")              //lower the scoop
     .setPosition(500, 210)
     .setSize(120, 70)
     .setSwitch(true);
   }
 void raiseScoopSetUp(ControlP5 cp){   
-  raise = cp.addButton("lift")              //raise the scoop
+  raise = cp.addButton("lift (r)")              //raise the scoop
     .setPosition(500, 130)
     .setSize(120, 70)
     .setSwitch(true);
@@ -84,26 +84,26 @@ void zero(ControlP5 cp){
    .setSwitch(true);
 }
 void twentyFive(ControlP5 cp){
-  twtyfive = cp.addButton("25")          // movement speed will be set to 25%
+  twtyfive = cp.addButton("25 (v)")          // movement speed will be set to 25%
    .setPosition(450, 50)                
    .setSize(50, 50)
    .setSwitch(true);
 }
 void fifty(ControlP5 cp){
-  ffty = cp.addButton("50")                // movement speed will be set to 50%
+  ffty = cp.addButton("50 (b)")                // movement speed will be set to 50%
    .setPosition(510, 50)                
    .setSize(50, 50)
    .setSwitch(true);
    
 }
 void seventyFive(ControlP5 cp){
-  svnfive = cp.addButton("75")         // movement speed will be set 75%
+  svnfive = cp.addButton("75 (n)")         // movement speed will be set 75%
    .setPosition(570, 50)                
    .setSize(50, 50)
    .setSwitch(true);
 }
 void hundred(ControlP5 cp){  
-  hundred = cp.addButton("100")              // movement speed will be set 100%
+  hundred = cp.addButton("100 (m)")              // movement speed will be set 100%
    .setPosition(630, 50)                
    .setSize(50, 50)
    .setSwitch(true);
@@ -192,43 +192,48 @@ void draw() {
     
     batteryLvl = port.readChar();
     
-    if(check == 1 && batteryLvl != 'l' && batteryLvl != 'k' && batteryLvl != 'j' && batteryLvl != 'h'){ // send a value to arduino if it has not recieved a battery level yet 
+    if(check == 1 && batteryLvl != 'l' && batteryLvl != 'k' && batteryLvl != 'j' && batteryLvl != 'h'){
       port.write('m');
       println(batteryLvl);
     }
-    else if(check == 1){ //once it has recieved a battery level make the check 0 so that the if statement is not used again
+    else if(check == 1){
       check = 0;
       port.write('m');
     }
     else{
     }
     
-    if(batteryLvl == 'h'){                            //25% battery left red red red green
+    if(batteryLvl == 'h'){                            //25% battery left
       greenBatteryCapsole(650,10);
       redBatteryCapsole(640, 10);
       redBatteryCapsole(630, 10);
       redBatteryCapsole(620, 10);
-    } 
-    else if (batteryLvl == 'j'){                       //50% battery left red red green green
+    }
+    else if (batteryLvl == 'j'){                       //50% battery left
       greenBatteryCapsole(650,10);
       greenBatteryCapsole(640, 10);
       redBatteryCapsole(630, 10);
       redBatteryCapsole(620, 10);
       
-    }                                                //75% battery left red green green green
+    }                                                //75% battery left
     else if (batteryLvl == 'k'){
       greenBatteryCapsole(650,10);
       greenBatteryCapsole(640, 10);
       greenBatteryCapsole(630, 10);
       redBatteryCapsole(620, 10);
     }
-    else if (batteryLvl == 'l'){                    //100% battery left green green green green
+    else if (batteryLvl == 'l'){                    //100% battery left
       greenBatteryCapsole(650,10);
       greenBatteryCapsole(640, 10);
       greenBatteryCapsole(630, 10);
       greenBatteryCapsole(620, 10);
     }
+    
 
+  
+  //if(forward.isOn()){
+  //  println("forward");
+  //}
 }
 
 
@@ -331,38 +336,38 @@ void keyPressed() {  //check which key is pressed and do something when it is
 
 void keyReleased() { // do something when the key is released
 
-    switch(key){ // check which key is pressed and turn on and off buttons and send port input
+    switch(key){ // check which key is pressed and turn on and off buttons and send port stuff
     case 'w':
-      setOff(forward);  //forward movement
+      setOff(forward);
       setOn(zero);
       port.write('z');
       //System.out.println("stop");
       break;
     case 'a':
-      setOff(left);  //left movement
+      setOff(left);
       setOn(zero);
       port.write('z');
       break;
     case 's':
-      setOff(backward);  //backward movement
+      setOff(backward);
       setOn(zero);
       port.write('z');
       break;
     case 'd':
-      setOff(right);  //right movement
+      setOff(right);
       setOn(zero);
       port.write('z');
       break;
       
     case 'r':
-      setOff(raise);  //raise the scoop
+      setOff(raise);
       break;
     case 't':
-      setOff(lower);  //lower the scoop
+      setOff(lower);
       break;
    
     case 'v': // speed 25%
-      port.write('z');  
+      port.write('z');
       break;
     case 'b': // speed 50%
       port.write('z');
