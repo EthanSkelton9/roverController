@@ -258,7 +258,7 @@ void keyPressed() {  //check which key is pressed and do something when it is
   }
   else if(hundred.isOn()){
     speed = hundred;
-    speedInput = 'b';
+    speedInput = 'a';
   }
   else{
   //System.out.println("error in speed input");
